@@ -330,9 +330,9 @@
                     factorialExplanation.innerHTML = '<p>0! = 1 (по определению)</p>';
                 } else {
                     let explanation = `${currentNumber}! = `;
-                    for (let i = currentNumber; i >= 1; i--) {
+                    for (let i = 1; i <= currentNumber; i++) {
                         explanation += i;
-                        if (i > 1) explanation += ' × ';
+                        if (i < currentNumber) explanation += ' × ';
                     }
                     explanation += ` = ${correctAnswer}`;
                     factorialExplanation.innerHTML = `<p>${explanation}</p>`;
@@ -443,7 +443,7 @@
     </script>
     <script>
         // Проверяем, есть ли доступ
-        if (localStorage.getItem("accessGranted") !== "true") {
+        if (!localStorage.getItem('childAccess')) {
             window.location.href = "index.html";
         }
     </script>
