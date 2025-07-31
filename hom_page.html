@@ -175,7 +175,7 @@
                 // Мок-данные уроков (в реальном проекте можно заменить на AJAX-запрос)
                 const lessons = {
                     "Математика": [
-                        { title: "Факториал для Лерочки", url: "lessons/math/factorial.html" },
+                        { title: "Факториал для Лерочки", url: "/temp/lesson/math/factorial.html" },
                         { title: "Квадратный корень", url: "lessons/math/square-root.html" }
                     ],
                     "Геометрия": [
@@ -251,108 +251,55 @@
                 const arrow = header.querySelector('span');
                 arrow.textContent = content.classList.contains('active') ? '▲' : '▼';
             }
-
-            // Загрузка контента урока
+            // Динамическая загрузка всей страницы "temp\lesson\math\factorial.html" с стилями и скриптами
             function loadLessonContent(url) {
                 fetch(url)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Урок не найден');
-                        return response.text();
-                    })
+                    .then(response => response.text())
                     .then(html => {
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(html, 'text/html');
 
-                        // Удаляем предыдущие стили уроков
-                        removePreviousLessonStyles();
+                        // Очищаем текущее содержимое mainContent
+                        mainContent.innerHTML = '';
 
-                        // Добавляем стили урока
-                        addLessonStyles(doc, url);
+                        // Копируем стили из загруженной страницы
+                        const styles = doc.querySelectorAll('style, link[rel="stylesheet"]');
+                        styles.forEach(style => {
+                            // Проверяем, не добавлен ли уже этот стиль
+                            if (!document.head.querySelector(`[data-href="${style.getAttribute('href') || style.textContent.substring(0, 20)}"]`)) {
+                                const newStyle = document.createElement(style.tagName);
+                                if (style.tagName === 'LINK') {
+                                    newStyle.rel = 'stylesheet';
+                                    newStyle.href = style.href;
+                                    newStyle.setAttribute('data-href', style.href); // Для отслеживания добавленных стилей
+                                } else {
+                                    newStyle.textContent = style.textContent;
+                                    newStyle.setAttribute('data-href', style.textContent.substring(0, 20));
+                                }
+                                document.head.appendChild(newStyle);
+                            }
+                        });
 
-                        // Вставляем контент урока
-                        insertLessonContent(doc);
+                        // Копируем тело загруженной страницы в mainContent
+                        const bodyContent = doc.body.innerHTML;
+                        mainContent.innerHTML = bodyContent;
 
-                        // Запускаем скрипты урока
-                        executeLessonScripts(doc);
+                        // Выполняем скрипты из загруженной страницы
+                        const scripts = doc.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const newScript = document.createElement('script');
+                            if (script.src) {
+                                newScript.src = script.src;
+                            } else {
+                                newScript.textContent = script.textContent;
+                            }
+                            mainContent.appendChild(newScript);
+                        });
                     })
                     .catch(error => {
-                        showError(error);
+                        console.error('Ошибка загрузки урока:', error);
+                        mainContent.innerHTML = '<p>Не удалось загрузить урок. Пожалуйста, попробуйте позже.</p>';
                     });
-            }
-
-            // Удаление стилей предыдущего урока
-            function removePreviousLessonStyles() {
-                document.querySelectorAll('style[data-lesson-style], link[data-lesson-style]').forEach(el => el.remove());
-            }
-
-            // Добавление стилей урока
-            function addLessonStyles(doc, baseUrl) {
-                const styles = doc.querySelectorAll('style, link[rel="stylesheet"]');
-
-                styles.forEach(style => {
-                    if (style.tagName === 'STYLE') {
-                        // Встроенные стили
-                        const newStyle = document.createElement('style');
-                        newStyle.textContent = style.textContent;
-                        newStyle.setAttribute('data-lesson-style', 'true');
-                        document.head.appendChild(newStyle);
-                    } else {
-                        // Внешние стили
-                        const link = document.createElement('link');
-                        link.rel = 'stylesheet';
-                        link.href = resolveUrl(style.href, baseUrl);
-                        link.setAttribute('data-lesson-style', 'true');
-                        document.head.appendChild(link);
-                    }
-                });
-            }
-
-            // Разрешение относительных URL
-            function resolveUrl(href, baseUrl) {
-                try {
-                    return new URL(href, baseUrl).href;
-                } catch (e) {
-                    return href;
-                }
-            }
-
-            // Вставка контента урока
-            function insertLessonContent(doc) {
-                const lessonContent = doc.querySelector('.lesson-container') ||
-                    doc.querySelector('main') ||
-                    doc.body;
-                mainContent.innerHTML = lessonContent.innerHTML;
-            }
-
-            // Выполнение скриптов урока
-            function executeLessonScripts(doc) {
-                const scripts = doc.querySelectorAll('script');
-
-                scripts.forEach(script => {
-                    const newScript = document.createElement('script');
-
-                    if (script.src) {
-                        // Внешние скрипты
-                        newScript.src = script.src;
-                    } else {
-                        // Встроенные скрипты
-                        newScript.textContent = script.textContent;
-                    }
-
-                    document.body.appendChild(newScript).remove();
-                });
-            }
-
-            // Показ ошибки загрузки
-            function showError(error) {
-                mainContent.innerHTML = `
-            <div class="error-message">
-                <h2>Ой, что-то пошло не так!</h2>
-                <p>${error.message}</p>
-                <button onclick="window.location.reload()">Обновить страницу</button>
-            </div>
-        `;
-                console.error('Ошибка загрузки урока:', error);
             }
         });
     </script>
