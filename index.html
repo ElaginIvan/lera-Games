@@ -1,97 +1,38 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форма входа</title>
+    <title>Вход для детей</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f9;
-        }
-        .login-form {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        .login-form h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #error-message {
-            color: red;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        input { padding: 10px; font-size: 16px; margin: 10px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .error { color: red; }
     </style>
 </head>
 <body>
-    <div class="login-form">
-        <h2>Вход</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">Имя пользователя:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Войти</button>
-            <div id="error-message"></div>
-        </form>
-    </div>
+    <h1>🔒 Секретная зона</h1>
+    <p>Введи пароль, чтобы войти:</p>
+    
+    <input type="password" id="passwordInput" placeholder="Пароль">
+    <button onclick="checkPassword()">Войти</button>
+    
+    <p id="errorText" class="error"></p>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Предотвращаем отправку формы
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
-            
-            // Проверяем логин и пароль (в данном случае "лера" для обоих полей)
-            if (username.toLowerCase() === 'лера' && password.toLowerCase() === 'лера') {
-                // Перенаправляем на index.html при успешном входе
-                window.location.href = 'hom_page.html';
+        function checkPassword() {
+            const password = document.getElementById("passwordInput").value;
+            const errorText = document.getElementById("errorText");
+
+            // Правильный пароль (можно поменять)
+            if (password === "лера") {
+                // Записываем в localStorage, что доступ разрешён
+                localStorage.setItem("accessGranted", "true");
+                // Переходим на защищённую страницу
+                window.location.href = "hom_page.html";
             } else {
-                errorMessage.textContent = 'Неверное имя пользователя или пароль';
+                errorText.textContent = "Неверный пароль! Попробуй ещё раз.";
             }
-        });
+        }
     </script>
 </body>
 </html>
