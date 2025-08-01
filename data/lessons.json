@@ -1,0 +1,18 @@
+{
+    "Математика": [
+        {
+            "title": "Факториал",
+            "url": "lessons/math/factorial.html"
+        },
+        {
+            "title": "Квадратный корень",
+            "url": "lessons/math/square-root.html"
+        }
+    ],
+    "Геометрия": [
+        {
+            "title": "Теорема Пифагора",
+            "url": "lessons/geometry/pythagorean-theorem.html"
+        }
+    ]
+}

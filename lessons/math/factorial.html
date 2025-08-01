@@ -1,0 +1,46 @@
+<body>
+    <link rel="stylesheet" href="/style/factorial.css">
+    <div class="game-container">
+        <h1>🎉 ФАКТОРИАЛ-ФЕСТ! ✨</h1>
+        <div class="level-info">
+            <p>Уровень: <span id="level">1</span></p>
+            <p>Очки: <span id="score">0</span></p>
+            <p>Рекорд: <span id="high-score">0</span></p>
+        </div>
+
+        <div class="game-area">
+            <div class="question-box">
+                <p>Чему равен факториал числа:</p>
+                <div id="question" class="question">5</div>
+                <div id="factorial-explanation" class="hidden">
+                    <p>5! = 5 × 4 × 3 × 2 × 1 = 120</p>
+                </div>
+            </div>
+
+            <div class="answers">
+                <!-- Ответы будут добавляться через JavaScript -->
+            </div>
+
+            <div class="feedback">
+                <p id="feedback-text"></p>
+                <button id="next-btn" class="hidden">Дальше →</button>
+            </div>
+        </div>
+
+        <div class="help-section">
+            <button id="help-btn">Помощь 💡</button>
+            <div id="help-text" class="hidden">
+                <p>Факториал числа - это произведение всех натуральных чисел от 1 до этого числа.</p>
+                <p>Обозначается восклицательным знаком: n!</p>
+                <p>Примеры:</p>
+                <ul>
+                    <li>3! = 3 × 2 × 1 = 6</li>
+                    <li>4! = 4 × 3 × 2 × 1 = 24</li>
+                    <li>5! = 5 × 4 × 3 × 2 × 1 = 120</li>
+                </ul>
+                <p>Запомни: 0! = 1 (это особый случай)</p>
+            </div>
+        </div>
+    </div>
+    <script src="/script/factorial.js"></script>
+</body>

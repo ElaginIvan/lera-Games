@@ -1,0 +1,37 @@
+<body>
+    <link rel="stylesheet" href="/style/square-root.css">
+    <div class="game-container">
+        <h1>🎪 КОРЕНЬ-ШОУ! 🎁</h1>
+        <div class="level-info">
+            <p>Уровень: <span id="level">1</span></p>
+            <p>Очки: <span id="score">0</span></p>
+            <p>Рекорд: <span id="high-score">0</span></p>
+        </div>
+
+        <div class="game-area">
+            <div class="question-box">
+                <p>Каков квадратный корень из:</p>
+                <div id="question" class="question">25</div>
+            </div>
+
+            <div class="answers">
+                <!-- Ответы будут добавляться через JavaScript -->
+            </div>
+
+            <div class="feedback">
+                <p id="feedback-text"></p>
+                <button id="next-btn" class="hidden">Дальше →</button>
+            </div>
+        </div>
+
+        <div class="help-section">
+            <button id="help-btn">Помощь 💡</button>
+            <div id="help-text" class="hidden">
+                <p>Квадратный корень из числа - это число, которое при умножении на себя дает исходное число.</p>
+                <p>Пример: √25 = 5, потому что 5 × 5 = 25</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/script/square-root.js"></script>
+</body>
