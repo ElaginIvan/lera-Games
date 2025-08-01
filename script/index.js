@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Переход через 1 секунду
                 setTimeout(() => {
-                    window.location.href = 'hom_page.html';
+                    window.location.href = '/lera-games/hom_page.html';
                 }, 1000);
             } else {
                 // Показываем ошибку
