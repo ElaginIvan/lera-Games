@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Функция загрузки структуры уроков
     function loadLessonsStructure() {
-        fetch('/data/lessons.json') // Путь к нашему новому файлу
+        fetch('data/lessons.json') // Путь к нашему новому файлу
             .then(response => {
                 if (!response.ok) {
                     // Если файл не найден или другая ошибка сети
