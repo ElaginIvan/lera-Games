@@ -1,6 +1,6 @@
 // Проверяем, есть ли доступ
 if (!localStorage.getItem('childAccess')) {
-    window.location.href = "index.html";
+    window.location.href = "/lera-games/index.html";
 }
 
 document.addEventListener('DOMContentLoaded', function () {
