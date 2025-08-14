@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Динамически загружаем скрипт с конфигурацией игры
     const script = document.createElement('script');
-    script.src = `/script/games/${gameId}.js`;
+    script.src = `/lera-games/script/games/${gameId}.js`;
 
     script.onload = () => {
         // 3. Скрипт загружен, теперь конфигурация должна быть в window.gameConfigs
@@ -58,4 +58,5 @@ function displayError(message) {
     } else {
         document.body.innerHTML = `<h1>${message}</h1>`;
     }
+
 }
