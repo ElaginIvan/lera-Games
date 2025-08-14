@@ -1,7 +1,7 @@
 // Проверяем, есть ли доступ. Теперь это делается в одном месте.
 if (!localStorage.getItem('childAccess')) {
     // Используем абсолютный путь, чтобы избежать ошибок при вызове из вложенных папок
-    window.location.href = "/index.html";
+    window.location.href = "/lera-games/index.html";
 }
 
 /**
@@ -403,4 +403,5 @@ class Game {
         this.scoreElement.textContent = this.score;
         this.levelElement.textContent = this.level;
     }
+
 }
