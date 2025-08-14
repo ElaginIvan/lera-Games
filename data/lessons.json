@@ -29,14 +29,15 @@
         {
             "title": "Геометрические фигуры",
             "id": "geometric-figures",
-            "url": "/lessons/geometry/geometric_figures.html"
+            "url": "/lera-games/lessons/geometry/geometric_figures.html"
         }
     ],
     "Русский язык": [
         {
             "title": "Орфография: Гласные",
             "id": "spelling-vowels",
-            "url": "/lessons/russian/spelling_game.html"
+            "url": "/lera-games/lessons/russian/spelling_game.html"
         }
     ]
+
 }
