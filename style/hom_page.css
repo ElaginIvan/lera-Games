@@ -13,7 +13,7 @@
 
 @font-face {
     font-family: 'MyFont';
-    src: url('/templates/fonts/COMICI.TTF');
+    src: url('/lera-games/templates/fonts/COMICI.TTF');
 }
 
 .container {
@@ -254,5 +254,6 @@
         transform: translateX(0);
         position: relative;
     }
+
 
 }
