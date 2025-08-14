@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Функция загрузки структуры уроков
     function loadLessonsStructure() {
-        fetch('/data/lessons.json') // Путь к нашему новому файлу
+        fetch('/lera-games/data/lessons.json') // Путь к нашему новому файлу
             .then(response => {
                 if (!response.ok) {
                     // Если файл не найден или другая ошибка сети
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             modalError.style.display = 'none';
             const gameIds = selectedGames.join(',');
-            const marathonUrl = `/templates/super_game_template.html?games=${gameIds}`;
+            const marathonUrl = `/lera-games/templates/super_game_template.html?games=${gameIds}`;
             loadLessonContent(marathonUrl);
             superGameModal.style.display = 'none';
         });
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const lessonLink = document.createElement('a');
         // Если в JSON указан прямой URL, используем его.
         // Иначе, строим URL для нашего игрового движка.
-        const lessonUrl = lesson.url ? lesson.url : `/templates/lesson_template.html?game=${lesson.id}`;
+        const lessonUrl = lesson.url ? lesson.url : `/lera-games/templates/lesson_template.html?game=${lesson.id}`;
         lessonLink.className = 'lesson-link';
         lessonLink.href = lessonUrl;
         lessonLink.textContent = lesson.title;
@@ -281,3 +281,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
+
