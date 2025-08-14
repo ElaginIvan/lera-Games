@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     // Иначе, загружаем скрипт
                     const script = document.createElement('script');
-                    script.src = `/script/games/${id}.js`;
+                    script.src = `/lera-games/script/games/${id}.js`;
                     script.onload = () => {
                         if (window.gameConfigs[id]) {
                             resolve(window.gameConfigs[id]);
@@ -204,4 +204,5 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         document.body.innerHTML = '<h1>Ошибка: не выбраны игры для марафона.</h1>';
     }
+
 });
