@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Геометрическая игра для 5 класса</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: transparent;
+            text-align: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        #game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #4169e1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .figure-container {
+            margin: 20px auto;
+            width: 200px;
+            height: 200px;
+            position: relative;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+        
+        #figure {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            fill: #ff7f50;
+            stroke: #333;
+            stroke-width: 2;
+        }
+        
+        #question {
+            font-size: 18px;
+            margin: 15px 0;
+            min-height: 50px;
+        }
+        
+        #options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .option {
+            padding: 10px 15px;
+            background-color: #4169e1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #5a7eff;
+            transform: scale(1.05);
+        }
+        
+        #result {
+            font-weight: bold;
+            min-height: 25px;
+            margin: 15px 0;
+            color: #4169e1;
+        }
+        
+        #score {
+            font-size: 20px;
+            margin: 15px 0;
+        }
+        
+        #next-btn {
+            padding: 10px 20px;
+            background-color: #32cd32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: none;
+            margin: 0 auto;
+        }
+        
+        #next-btn:hover {
+            background-color: #3ce33c;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        #progress-bar {
+            height: 20px;
+            background-color: #4169e1;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .hint {
+            font-style: italic;
+            color: #666;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Геометрическая игра</h1>
+        <div id="score">Очки: 0</div>
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        
+        <div class="figure-container">
+            <svg id="figure" width="180" height="180" viewBox="0 0 100 100"></svg>
+        </div>
+        
+        <div id="question"></div>
+        <div class="hint" id="hint"></div>
+        <div id="result"></div>
+        
+        <div id="options"></div>
+        
+        <button id="next-btn">Следующий вопрос</button>
+    </div>
+
+    <script>
+        // Данные для игры
+        const figures = [
+            {
+                name: "Квадрат",
+                svg: '<rect x="20" y="20" width="60" height="60" />',
+                properties: ["4 стороны", "Все стороны равны", "Все углы 90°"],
+                questions: [
+                    {
+                        text: "Как называется эта фигура?",
+                        options: ["Квадрат", "Прямоугольник", "Ромб", "Треугольник"],
+                        answer: 0
+                    },
+                    {
+                        text: "Сколько сторон у этой фигуры?",
+                        options: ["3", "4", "5", "6"],
+                        answer: 1
+                    },
+                    {
+                        text: "Чему равны углы этой фигуры?",
+                        options: ["45°", "60°", "90°", "120°"],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                name: "Треугольник",
+                svg: '<polygon points="50,10 10,90 90,90" />',
+                properties: ["3 стороны", "3 угла", "Сумма углов 180°"],
+                questions: [
+                    {
+                        text: "Как называется эта фигура?",
+                        options: ["Квадрат", "Пятиугольник", "Треугольник", "Круг"],
+                        answer: 2
+                    },
+                    {
+                        text: "Сколько сторон у этой фигуры?",
+                        options: ["2", "3", "4", "5"],
+                        answer: 1
+                    },
+                    {
+                        text: "Чему равна сумма углов этой фигуры?",
+                        options: ["90°", "180°", "270°", "360°"],
+                        answer: 1
+                    }
+                ]
+            },
+            {
+                name: "Прямоугольник",
+                svg: '<rect x="15" y="30" width="70" height="40" />',
+                properties: ["4 стороны", "Противоположные стороны равны", "Все углы 90°"],
+                questions: [
+                    {
+                        text: "Как называется эта фигура?",
+                        options: ["Квадрат", "Прямоугольник", "Ромб", "Трапеция"],
+                        answer: 1
+                    },
+                    {
+                        text: "Сколько пар равных сторон у этой фигуры?",
+                        options: ["1", "2", "3", "4"],
+                        answer: 1
+                    },
+                    {
+                        text: "Чему равны углы этой фигуры?",
+                        options: ["45°", "60°", "90°", "120°"],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                name: "Круг",
+                svg: '<circle cx="50" cy="50" r="40" />',
+                properties: ["Нет углов", "Одна сторона (окружность)", "Диаметр в 2 раза больше радиуса"],
+                questions: [
+                    {
+                        text: "Как называется эта фигура?",
+                        options: ["Овал", "Круг", "Эллипс", "Сфера"],
+                        answer: 1
+                    },
+                    {
+                        text: "Сколько углов у этой фигуры?",
+                        options: ["0", "1", "4", "Бесконечное количество"],
+                        answer: 0
+                    },
+                    {
+                        text: "Если радиус круга 5 см, то чему равен диаметр?",
+                        options: ["5 см", "10 см", "15 см", "20 см"],
+                        answer: 1
+                    }
+                ]
+            },
+            {
+                name: "Ромб",
+                svg: '<polygon points="50,10 20,50 50,90 80,50" />',          
+                properties: ["4 стороны", "Все стороны равны", "Противоположные углы равны"],
+                questions: [
+                    {
+                        text: "Как называется эта фигура?",
+                        options: ["Квадрат", "Прямоугольник", "Ромб", "Параллелограмм"],
+                        answer: 2
+                    },
+                    {
+                        text: "Сколько сторон у этой фигуры?",
+                        options: ["3", "4", "5", "6"],
+                        answer: 1
+                    },
+                    {
+                        text: "Какое утверждение верно для этой фигуры?",
+                        options: ["Все углы равны", "Противоположные углы равны", "Только один угол прямой", "Нет верных ответов"],
+                        answer: 1
+                    }
+                ]
+            }
+        ];
+
+        // Переменные игры
+        let currentFigureIndex = 0;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let totalQuestions = 0;
+        let answeredQuestions = 0;
+
+        // Элементы DOM
+        const figureElement = document.getElementById('figure');
+        const questionElement = document.getElementById('question');
+        const hintElement = document.getElementById('hint');
+        const resultElement = document.getElementById('result');
+        const optionsElement = document.getElementById('options');
+        const nextButton = document.getElementById('next-btn');
+        const scoreElement = document.getElementById('score');
+        const progressBar = document.getElementById('progress-bar');
+
+        // Инициализация игры
+        function initGame() {
+            totalQuestions = figures.reduce((acc, figure) => acc + figure.questions.length, 0);
+            updateProgress();
+            showRandomQuestion();
+        }
+
+        // Показать случайный вопрос
+        function showRandomQuestion() {
+            // Выбираем случайную фигуру
+            currentFigureIndex = Math.floor(Math.random() * figures.length);
+            const currentFigure = figures[currentFigureIndex];
+            
+            // Выбираем случайный вопрос для этой фигуры
+            currentQuestionIndex = Math.floor(Math.random() * currentFigure.questions.length);
+            const currentQuestion = currentFigure.questions[currentQuestionIndex];
+            
+            // Отображаем фигуру
+            figureElement.innerHTML = currentFigure.svg;
+            
+            // Отображаем вопрос
+            questionElement.textContent = currentQuestion.text;
+            
+            // Отображаем подсказку (свойства фигуры)
+            hintElement.textContent = `Подсказка: ${currentFigure.properties.join(', ')}`;
+            
+            // Очищаем предыдущие варианты ответов
+            optionsElement.innerHTML = '';
+            
+            // Создаем кнопки с вариантами ответов
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(index);
+                optionsElement.appendChild(button);
+            });
+            
+            // Скрываем кнопку "Следующий вопрос"
+            nextButton.style.display = 'none';
+            resultElement.textContent = '';
+        }
+
+        // Проверить ответ
+        function checkAnswer(selectedIndex) {
+            const currentFigure = figures[currentFigureIndex];
+            const currentQuestion = currentFigure.questions[currentQuestionIndex];
+            
+            // Отключаем все кнопки
+            const optionButtons = document.querySelectorAll('.option');
+            optionButtons.forEach(button => {
+                button.disabled = true;
+                button.style.opacity = '0.7';
+            });
+            
+            // Проверяем ответ
+            if (selectedIndex === currentQuestion.answer) {
+                resultElement.textContent = 'Правильно! 👍';
+                resultElement.style.color = 'green';
+                score += 10;
+            } else {
+                resultElement.textContent = `Неправильно. Правильный ответ: ${currentQuestion.options[currentQuestion.answer]} 👎`;
+                resultElement.style.color = 'red';
+            }
+            
+            // Обновляем счет
+            scoreElement.textContent = `Очки: ${score}`;
+            answeredQuestions++;
+            updateProgress();
+            
+            // Показываем кнопку "Следующий вопрос"
+            nextButton.style.display = 'block';
+        }
+
+        // Обновить прогресс
+        function updateProgress() {
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Обработчик кнопки "Следующий вопрос"
+        nextButton.onclick = function() {
+            if (answeredQuestions >= totalQuestions) {
+                // Игра окончена
+                questionElement.textContent = 'Игра завершена!';
+                hintElement.textContent = '';
+                optionsElement.innerHTML = '';
+                figureElement.innerHTML = '';
+                resultElement.textContent = `Ваш итоговый счет: ${score}`;
+                nextButton.style.display = 'none';
+                
+                // Добавляем кнопку для новой игры
+                const restartButton = document.createElement('button');
+                restartButton.className = 'option';
+                restartButton.textContent = 'Играть снова';
+                restartButton.style.backgroundColor = '#4169e1';
+                restartButton.style.margin = '20px auto';
+                restartButton.style.display = 'block';
+                restartButton.onclick = function() {
+                    score = 0;
+                    answeredQuestions = 0;
+                    scoreElement.textContent = `Очки: ${score}`;
+                    initGame();
+                    this.remove();
+                };
+                optionsElement.appendChild(restartButton);
+            } else {
+                showRandomQuestion();
+            }
+        };
+
+        // Запускаем игру при загрузке страницы
+        window.onload = initGame;
+    </script>
+</body>
+</html>
